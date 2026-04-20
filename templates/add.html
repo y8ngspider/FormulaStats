@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h1>Add a New Driver</h1>
+
+      <div id="success-msg" class="alert alert-success d-none">
+        New item successfully created!
+        <a id="see-it-link" href="#">See it here</a>
+      </div>
+
+      <form id="add-form">
+
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input id="name" type="text" class="form-control" placeholder="e.g. Lewis Hamilton">
+          <div class="text-danger small" id="err-name"></div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Image URL</label>
+          <input id="media_link" type="text" class="form-control" placeholder="https://...">
+          <div class="text-danger small" id="err-media_link"></div>
+        </div>
+
+        <div class="row">
+          <div class="col mb-3">
+            <label class="form-label">Career Start Year</label>
+            <input id="career_start_year" type="number" class="form-control" placeholder="e.g. 2007">
+            <div class="text-danger small" id="err-career_start_year"></div>
+          </div>
+          <div class="col mb-3">
+            <label class="form-label">Career End Year</label>
+            <input id="career_end_year" type="number" class="form-control" placeholder="e.g. 2025">
+            <div class="text-danger small" id="err-career_end_year"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col mb-3">
+            <label class="form-label">Championships</label>
+            <input id="championships" type="number" class="form-control" placeholder="e.g. 7">
+            <div class="text-danger small" id="err-championships"></div>
+          </div>
+          <div class="col mb-3">
+            <label class="form-label">Wins</label>
+            <input id="wins" type="number" class="form-control" placeholder="e.g. 103">
+            <div class="text-danger small" id="err-wins"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col mb-3">
+            <label class="form-label">Pole Positions</label>
+            <input id="pole_positions" type="number" class="form-control" placeholder="e.g. 104">
+            <div class="text-danger small" id="err-pole_positions"></div>
+          </div>
+          <div class="col mb-3">
+            <label class="form-label">Podiums</label>
+            <input id="podiums" type="number" class="form-control" placeholder="e.g. 197">
+            <div class="text-danger small" id="err-podiums"></div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Teams <span class="text-muted small">(comma separated)</span></label>
+          <input id="teams" type="text" class="form-control" placeholder="e.g. McLaren, Mercedes">
+          <div class="text-danger small" id="err-teams"></div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Notable Races <span class="text-muted small">(comma separated)</span></label>
+          <input id="notable_races" type="text" class="form-control" placeholder="e.g. 2008 British Grand Prix">
+          <div class="text-danger small" id="err-notable_races"></div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Summary</label>
+          <textarea id="summary" class="form-control" rows="4" placeholder="Write a short bio..."></textarea>
+          <div class="text-danger small" id="err-summary"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

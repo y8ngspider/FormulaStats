@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <div class="container mt-4">
+    {% if driver %}
+    <div class="d-flex align-items-center gap-3 mb-3">
+      <h1 class="mb-0">{{ driver.name }}</h1>
+      <a href="/edit/{{ driver.id }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+    </div>
+
+      
+      <img src="{{ driver.media_link }}" class="view-image mb-3" alt="{{ driver.name }}">
+      <p><strong>Championships:</strong> {{ driver.championships }}</p>
+      <p><strong>Wins:</strong> {{ driver.wins }}</p>
+      <p><strong>Pole Positions:</strong> {{ driver.pole_positions }}</p>
+      <p><strong>Podiums:</strong> {{ driver.podiums }}</p>
+      <p><strong>Career:</strong> {{ driver.career_start_year }} - {{ driver.career_end_year }}</p>
+      <p><strong>Summary:</strong> {{ driver.summary }}</p>
+      <p><strong>Teams:</strong> {{ driver.teams|join(', ') }}</p>
+      <p><strong>Notable Races:</strong> {{ driver.notable_races|join(', ') }}</p>
+      
+    {% else %}
+      <p>Driver not found.</p>
+    {% endif %}
+  </div>
+{% endblock %}
