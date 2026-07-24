@@ -1,4 +1,4 @@
-# F1 Driver Profiles
+# FormulaStats
 
 A full-stack web application for browsing, searching, and managing Formula 1 driver profiles. Built for Columbia's User Interface Design course.
 
@@ -15,19 +15,21 @@ A full-stack web application for browsing, searching, and managing Formula 1 dri
 - **Patterns:** REST-style routes, AJAX with JSON endpoints, Jinja2 layout inheritance
 
 ## Routes
-- `/` — Home page with top drivers
-- `/search?q=<query>` — Search with regex highlighting
-- `/view/<id>` — Individual driver profile
-- `/add` — Add new driver form
-- `/edit/<id>` — Edit existing driver
-- `/add-driver`, `/update-driver/<id>` — JSON API endpoints
+- `/`: Home page with top drivers
+- `/search?q=<query>`: Search with regex highlighting
+- `/view/<id>`: Individual driver profile
+- `/add`: Add new driver form
+- `/edit/<id>`: Edit existing driver
+- `/add-driver`, `/update-driver/<id>`: JSON API endpoints
 
 ## Running Locally
 ```bash
-pip install flask
+pip install -r requirements.txt
 python server.py
 ```
 Then open `http://localhost:5000` in your browser.
 
+Note: driver data is stored in-memory and resets whenever the server restarts.
+
 ## Author
-Ethan Yang — Columbia University, CS & Financial Economics
+Ethan Yang, Columbia University, CS & Financial Economics

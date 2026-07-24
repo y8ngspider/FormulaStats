@@ -155,6 +155,11 @@ def home_page():
   return render_template('home.html', data=data)
 
 
+@app.route('/drivers')
+def drivers_page():
+  return render_template('drivers.html', data=data)
+
+
 @app.route('/search', methods=['GET'])
 def search():
   query = request.args.get('q', '').strip()
@@ -189,6 +194,35 @@ def view_driver(driver_id):
   return render_template('view.html', driver=driver, data=data)
 
 
+TEXT_FIELDS = ['name', 'summary', 'media_link', 'teams', 'notable_races']
+NUMBER_FIELDS = ['career_start_year', 'career_end_year', 'championships', 'wins', 'pole_positions', 'podiums']
+
+
+def validate_driver_payload(payload):
+  errors = {}
+
+  for field in TEXT_FIELDS:
+    if not payload.get(field, '').strip():
+      errors[field] = 'This field is required'
+
+  for field in NUMBER_FIELDS:
+    val = str(payload.get(field, '')).strip()
+    if val == '':
+      errors[field] = 'This field is required'
+    elif not val.isdigit():
+      errors[field] = 'Must be a number'
+
+  return errors
+
+
+def driver_fields_from_payload(payload):
+  fields = {field: payload[field].strip() for field in TEXT_FIELDS}
+  fields.update({field: int(payload[field]) for field in NUMBER_FIELDS})
+  fields['teams'] = [t.strip() for t in fields['teams'].split(',')]
+  fields['notable_races'] = [r.strip() for r in fields['notable_races'].split(',')]
+  return fields
+
+
 @app.route('/add')
 def add_page():
   return render_template('add.html', data=data)
@@ -197,38 +231,12 @@ def add_page():
 def add_driver():
   new_driver = request.get_json()
 
-  errors = {}
-
-  text_fields = ['name', 'summary', 'media_link', 'teams', 'notable_races']
-  for field in text_fields:
-    if not new_driver.get(field, '').strip():
-      errors[field] = 'This field is required'
-
-  number_fields = ['career_start_year', 'career_end_year', 'championships', 'wins', 'pole_positions', 'podiums']
-  for field in number_fields:
-    val = str(new_driver.get(field, '')).strip()
-    if val == '':
-      errors[field] = 'This field is required'
-    elif not val.isdigit():
-      errors[field] = 'Must be a number'
-
+  errors = validate_driver_payload(new_driver)
   if errors:
     return jsonify({'success': False, 'errors': errors}), 400
+
   new_id = max(d['id'] for d in data) + 1
-  driver = {
-    'id': new_id,
-    'name': new_driver['name'].strip(),
-    'media_link': new_driver['media_link'].strip(),
-    'career_start_year': int(new_driver['career_start_year']),
-    'career_end_year': int(new_driver['career_end_year']),
-    'championships': int(new_driver['championships']),
-    'wins': int(new_driver['wins']),
-    'pole_positions': int(new_driver['pole_positions']),
-    'podiums': int(new_driver['podiums']),
-    'summary': new_driver['summary'].strip(),
-    'teams': [t.strip() for t in new_driver['teams'].split(',')],
-    'notable_races': [r.strip() for r in new_driver['notable_races'].split(',')]
-  }
+  driver = {'id': new_id, **driver_fields_from_payload(new_driver)}
   data.append(driver)
   return jsonify({'success': True, 'id': new_id})
 
@@ -246,36 +254,17 @@ def edit_page(driver_id):
 def update_driver(driver_id):
   updated = request.get_json()
 
-  errors = {}
-  text_fields = ['name', 'summary', 'media_link', 'teams', 'notable_races']
-  for field in text_fields:
-    if not updated.get(field, '').strip():
-      errors[field] = 'This field is required'
-
-  number_fields = ['career_start_year', 'career_end_year', 'championships', 'wins', 'pole_positions', 'podiums']
-  for field in number_fields:
-    val = str(updated.get(field, '')).strip()
-    if val == '':
-      errors[field] = 'This field is required'
-    elif not val.isdigit():
-      errors[field] = 'Must be a number'
-
+  errors = validate_driver_payload(updated)
   if errors:
     return jsonify({'success': False, 'errors': errors}), 400
 
   for d in data:
     if d['id'] == driver_id:
-      d['name']              = updated['name'].strip()
-      d['media_link']        = updated['media_link'].strip()
-      d['career_start_year'] = int(updated['career_start_year'])
-      d['career_end_year']   = int(updated['career_end_year'])
-      d['championships']     = int(updated['championships'])
-      d['wins']              = int(updated['wins'])
-      d['pole_positions']    = int(updated['pole_positions'])
-      d['podiums']           = int(updated['podiums'])
-      d['summary']           = updated['summary'].strip()
-      d['teams']             = [t.strip() for t in updated['teams'].split(',')]
-      d['notable_races']     = [r.strip() for r in updated['notable_races'].split(',')]
+      d.update(driver_fields_from_payload(updated))
       break
 
   return jsonify({'success': True, 'id': driver_id})
+
+
+if __name__ == '__main__':
+  app.run(debug=True)

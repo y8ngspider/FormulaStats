@@ -4,7 +4,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>F1 Website</title>
+    <title>FormulaStats</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml" />
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
@@ -21,7 +22,7 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">Formula Ten List</a>
+        <a class="navbar-brand" href="/">FormulaStats</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -34,10 +35,11 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
+          <div class="navbar-nav align-items-lg-center gap-lg-3 flex-grow-1">
             <a class="nav-link" href="/">Home</a>
-            <a class="nav-link" href="/add">Add Driver</a> 
-            <form id="submission" class="d-flex"action="/search" method="GET">
+            <a class="nav-link" href="/drivers">All Drivers</a>
+            <a class="nav-link" href="/add">Add Driver</a>
+            <form id="submission" class="d-flex ms-lg-auto" action="/search" method="GET">
               <input
                 class="form-control me-2"
                 type="search"
@@ -69,7 +71,6 @@
     <!-- custom code -->
     <script>
       window.data = {{data|tojson}};
-      console.log(window.data);
     </script>
     <script
       type="text/javascript"

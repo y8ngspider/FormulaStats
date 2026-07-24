@@ -1,28 +1,35 @@
 $(document).ready(function() {
   let drivers = $(".drivers");
+  let allDrivers = $(".all-drivers");
   const data = window.data || [];
 
-  function display_top3(){
-    data.slice(0,3).forEach((s) => {
-      let summary = s.summary.substring(0, 100) + '...';
-      let newdriver = $(`
-        <div class="col-md-4">
-          <div class="card h-100 driver-card">
-            <a href="/view/${s.id}">
-              <img class="card-img-top driver_image" src="${s.media_link}" alt="${s.name}">
-            </a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="/view/${s.id}" class="text-decoration-none text-dark">${s.name}</a></h5>
-              <p class="text-muted small">${s.championships} championships • ${s.career_start_year}–${s.career_end_year}</p>
-              <p class="card-text">${summary}</p>
-              <a href="/view/${s.id}" class="btn btn-sm btn-primary">View Profile</a>
-            </div>
+  function driverCard(s){
+    let summary = s.summary.substring(0, 100) + '...';
+    return $(`
+      <div class="col-md-4">
+        <div class="card h-100 driver-card">
+          <a href="/view/${s.id}">
+            <img class="card-img-top driver_image" src="${s.media_link}" alt="${s.name}">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title"><a href="/view/${s.id}" class="text-decoration-none text-dark">${s.name}</a></h5>
+            <p class="text-muted small">${s.championships} championships • ${s.career_start_year}–${s.career_end_year}</p>
+            <p class="card-text">${summary}</p>
+            <a href="/view/${s.id}" class="btn btn-sm btn-primary">View Profile</a>
           </div>
-        </div>`);
-      drivers.append(newdriver);
-    });
+        </div>
+      </div>`);
+  }
+
+  function display_top3(){
+    data.slice(0,3).forEach((s) => drivers.append(driverCard(s)));
   };
-  display_top3();
+  if (drivers.length) display_top3();
+
+  function display_all(){
+    data.forEach((s) => allDrivers.append(driverCard(s)));
+  };
+  if (allDrivers.length) display_all();
 
   $("#submission").on("submit", function(e){
     let query = $('input[name="q"]').val();

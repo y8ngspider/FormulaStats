@@ -8,14 +8,15 @@
       <p class="text-muted">{{ count }} result(s) found</p>
       
       {% if results %}
-        <ul>
+        <div class="list-group">
           {% for driver in results %}
-            <li><a href="/view/{{ driver.id }}">{{ driver.name }}</a></li>
-            <h5 class="mb-1">{{ driver.name_hl }}</h5>
-            <p class="mb-1 text-muted small">{{ driver.summary_hl }}...</p>
-            <small class="text-muted">Teams: {{ driver.teams_hl }}</small>
+            <a href="/view/{{ driver.id }}" class="list-group-item list-group-item-action py-3">
+              <h5 class="mb-1">{{ driver.name_hl }}</h5>
+              <p class="mb-1 text-muted small">{{ driver.summary_hl }}&hellip;</p>
+              <small class="text-muted">Teams: {{ driver.teams_hl }}</small>
+            </a>
           {% endfor %}
-        </ul>
+        </div>
       {% else %}
         <p>No results found</p>
       {% endif %}
